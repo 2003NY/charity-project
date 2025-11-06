@@ -1,45 +1,22 @@
 const mongoose = require('mongoose');
+// db/db.js
 
-// Define the log schema to track donations and transfers
-const logSchema = new mongoose.Schema({
-    donorAddress: {
-        type: String,
-        required: true,
-    },
-    amount: {
-        type: Number,
-        required: true,
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
-    status: {
-        type: String,
-        enum: ['Deposited', 'Transferred'],
-        default: 'Deposited',
-    },
+const donationSchema = new mongoose.Schema({
+    donor: String,
+    amount: Number,
+    txHash: String,
+    timestamp: { type: Date, default: Date.now },
 });
 
-const Log = mongoose.model('Log', logSchema);
+const DonationLog = mongoose.model('DonationLog', donationSchema);
 
-// Define the transfer log schema to track fund transfers
-const transferLogSchema = new mongoose.Schema({
-    recipientAddress: {
-        type: String,
-        required: true,
-    },
-    transferredAmount: {
-        type: Number,
-        required: true,
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
+const charityTransferSchema = new mongoose.Schema({
+    recipient: String,
+    totalTransferred: Number,
+    txHash: String,
+    timestamp: { type: Date, default: Date.now },
 });
 
-const TransferLog = mongoose.model('TransferLog', transferLogSchema);
+const CharityTransfer = mongoose.model('CharityTransfer', charityTransferSchema);
 
-// Export the models
-module.exports = { Log, TransferLog };
+module.exports = { DonationLog, CharityTransfer };
